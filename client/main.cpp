@@ -81,11 +81,17 @@ int main(int argc, char* argv[])
         ic = Ice::initialize(argc, argv);
         Ice::ObjectPrx base = ic->stringToProxy(
         "SimplePrinter:default -p 10000");
-        actionsPrx Printer = actionsPrx::checkedCast(base);
-        
+        actionsPrx Printer = actionsPrx::uncheckedCast(base);
         if (!Printer)
-        throw "Invalid proxy";
+        throw "Invalid proxy actionsPrx";
 
+        Ice::ObjectPrx getAction = ic->stringToProxy(
+        "SimpleAction:default -p 10000");
+        getActionPrx ac = getActionPrx::uncheckedCast(getAction);
+        if (!ac)
+        throw "Invalid proxy getActionPrx";
+        
+        
         char c;
         do
         {
@@ -149,6 +155,31 @@ int main(int argc, char* argv[])
                 Ice::CallbackPtr d = Ice::newCallback(cb, &computeCallback::finished);
                 Printer->begin_compute(3, 5, d);
                 cout<<"begin_compute"<<endl;
+            }
+            if(c == '9')
+            {
+                stuPtr st = new stu;
+                st->num = 1;
+                st->name = 2;
+                
+                
+                stuPtr s = ac->getStu(st);
+                cout<<"getStu s->name:"<<s->name<<endl;
+            }
+            if(c == 'a')
+            {
+                node nn;
+                nn.n1 = 1;
+                nn.n2 = 2;
+                
+                node n = ac->getNode(nn);
+                cout<<"getNode n.n2:"<<n.n2<<endl;
+            }
+            if(c == 'b')
+            {
+                cout<<"getactions start"<<endl;
+                actionsPrx p = ac->getactions();
+                cout<<"getactions end"<<endl;
             }
         }while(cin.good() && c != 'x');
         

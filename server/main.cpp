@@ -38,20 +38,44 @@ class actionsI : public actions
         }
     }
     
-    virtual ::Ice::Int compute(::Ice::Int n1, ::Ice::Int n2, const ::Ice::Current& current = ::Ice::emptyCurrent)
+    virtual void compute_async(const ::modes::AMD_actions_computePtr& cb, ::Ice::Int n1, ::Ice::Int n2, const ::Ice::Current& = ::Ice::emptyCurrent)
     {
-        cout<<"compute start"<<endl;
+        cout<<"compute_async start"<<endl;
         sleep(5);
-        cout<<"compute end"<<endl;
-        return n1 * n2;
-    }
-    
-    
-    virtual void compute_async(const AMD_actions_computePtr& ptr, ::Ice::Int n1, ::Ice::Int n2)
-    {
+        cout<<"compute_async end"<<endl;
         
+        cb->ice_response(n1 * n2);
     }
 };
+
+
+class getActionI : public getAction
+{
+    virtual stuPtr getStu(const stuPtr& s, const ::Ice::Current& = ::Ice::emptyCurrent)
+    {
+        cout<<"getStu"<<endl;
+        return s;
+    }
+    virtual node getNode(const node& n, const ::Ice::Current& = ::Ice::emptyCurrent)
+    {
+        cout<<"getNode"<<endl;
+        return n;
+    }
+    virtual actionsPrx getactions(const ::Ice::Current& = ::Ice::emptyCurrent)
+    {
+        cout<<"getactions 1"<<endl;
+        Ice::CommunicatorPtr ic;
+        
+        ic = Ice::initialize();
+        Ice::ObjectPrx base = ic->stringToProxy(
+        "SimplePrinter:default -p 10000");
+        actionsPrx Printer = actionsPrx::uncheckedCast(base);
+        cout<<"getactions 2"<<endl;
+        return Printer;
+    }
+    
+};
+
 
 int main(int argc, char* argv[])
 {
@@ -62,9 +86,11 @@ int main(int argc, char* argv[])
         Ice::ObjectAdapterPtr adapter
         = ic->createObjectAdapterWithEndpoints(
         "SimpleAdapter", "default -p 10000");
-        
-        Ice::ObjectPtr object = new actionsI;
-        adapter->add(object, ic->stringToIdentity("SimplePrinter"));
+        Ice::ObjectPtr object1 = new actionsI;
+        adapter->add(object1, ic->stringToIdentity("SimplePrinter"));
+
+        Ice::ObjectPtr object2 = new getActionI;
+        adapter->add(object2, ic->stringToIdentity("SimpleAction"));
         
         adapter->activate();
         cout<<"activate ok"<<endl;
