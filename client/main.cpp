@@ -2,6 +2,7 @@
 #include <iostream>
 #include <Ice/Ice.h>
 #include "../head.h"
+#include <Ice/SliceChecksums.h>
 using namespace std;
 using namespace modes;
 
@@ -91,6 +92,26 @@ int main(int argc, char* argv[])
         if (!ac)
         throw "Invalid proxy getActionPrx";
         
+        //检查版本是否一致
+        Ice::SliceChecksumDict serverChecksums = ac->getChecksums();
+        Ice::SliceChecksumDict localChecksums = Ice::sliceChecksums();
+        for(Ice::SliceChecksumDict::const_iterator p = localChecksums.begin();
+        p != localChecksums.end(); ++p)
+        {
+            Ice::SliceChecksumDict::const_iterator q = serverChecksums.find(p->first);
+            if(q == serverChecksums.end())
+            {
+                // No match found for type id!
+                cout<<"No match found for type id"<<endl;
+                return -1;
+            } 
+            else if(p->second != q->second)
+            {
+                // Checksum mismatch!
+                cout<<"Checksum mismatch"<<endl;
+                return -1;
+            }
+        }
         
         char c;
         do

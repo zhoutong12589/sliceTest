@@ -38,6 +38,7 @@
 #include <Ice/FactoryTableInit.h>
 #include <IceUtil/ScopedArray.h>
 #include <Ice/Optional.h>
+#include <Ice/SliceChecksumDict.h>
 #include <IceUtil/UndefSysMacros.h>
 
 #ifndef ICE_IGNORE_VERSION
@@ -137,14 +138,17 @@ public:
 
     static const ::std::string& ice_staticId();
 
-    virtual ::std::shared_ptr<actionsPrx> getactions(const ::Ice::Current&) = 0;
+    virtual ::std::shared_ptr<::modes::actionsPrx> getactions(const ::Ice::Current&) = 0;
     bool _iceD_getactions(::IceInternal::Incoming&, const ::Ice::Current&);
 
-    virtual ::std::shared_ptr<stu> getStu(::std::shared_ptr<stu>, const ::Ice::Current&) = 0;
+    virtual ::std::shared_ptr<::modes::stu> getStu(::std::shared_ptr<::modes::stu>, const ::Ice::Current&) = 0;
     bool _iceD_getStu(::IceInternal::Incoming&, const ::Ice::Current&);
 
-    virtual node getNode(node, const ::Ice::Current&) = 0;
+    virtual ::modes::node getNode(::modes::node, const ::Ice::Current&) = 0;
     bool _iceD_getNode(::IceInternal::Incoming&, const ::Ice::Current&);
+
+    virtual ::Ice::SliceChecksumDict getChecksums(const ::Ice::Current&) = 0;
+    bool _iceD_getChecksums(::IceInternal::Incoming&, const ::Ice::Current&);
 
     virtual bool _iceDispatch(::IceInternal::Incoming&, const ::Ice::Current&) override;
 };
@@ -154,7 +158,7 @@ public:
 namespace modes
 {
 
-class base : public ::Ice::ValueHelper<base, ::Ice::Value>
+class base : public ::Ice::ValueHelper<base, Ice::Value>
 {
 public:
 
@@ -184,7 +188,7 @@ public:
 
 static base _iceS_base_init;
 
-class stu : public ::Ice::ValueHelper<stu, base>
+class stu : public ::Ice::ValueHelper<stu, ::modes::base>
 {
 public:
 
@@ -198,7 +202,7 @@ public:
     stu& operator=(stu&&) = default;
 
     stu(int iceP_name, int iceP_num) :
-        Ice::ValueHelper<stu, base>(iceP_name),
+        Ice::ValueHelper<::modes::stu, ::modes::base>(iceP_name),
         num(iceP_num)
     {
     }
@@ -224,14 +228,14 @@ public:
 
     void printString(const ::std::string& iceP_str, const ::Ice::Context& context = Ice::noExplicitContext)
     {
-        _makePromiseOutgoing<void>(true, this, &actionsPrx::_iceI_printString, iceP_str, context).get();
+        _makePromiseOutgoing<void>(true, this, &modes::actionsPrx::_iceI_printString, iceP_str, context).get();
     }
 
     template<template<typename> class P = ::std::promise>
-    auto printStringAsync(const ::std::string& iceP_str, const ::Ice::Context& context = ::Ice::noExplicitContext)
+    auto printStringAsync(const ::std::string& iceP_str, const ::Ice::Context& context = Ice::noExplicitContext)
         -> decltype(::std::declval<P<void>>().get_future())
     {
-        return _makePromiseOutgoing<void, P>(false, this, &actionsPrx::_iceI_printString, iceP_str, context);
+        return _makePromiseOutgoing<void, P>(false, this, &modes::actionsPrx::_iceI_printString, iceP_str, context);
     }
 
     ::std::function<void()>
@@ -241,21 +245,21 @@ public:
                      ::std::function<void(bool)> sent = nullptr,
                      const ::Ice::Context& context = Ice::noExplicitContext)
     {
-        return _makeLamdaOutgoing<void>(response, ex, sent, this, &actionsPrx::_iceI_printString, iceP_str, context);
+        return _makeLamdaOutgoing<void>(response, ex, sent, this, &modes::actionsPrx::_iceI_printString, iceP_str, context);
     }
 
     void _iceI_printString(const ::std::shared_ptr<::IceInternal::OutgoingAsyncT<void>>&, const ::std::string&, const ::Ice::Context&);
 
     int printStringWithRet(const ::std::string& iceP_str, const ::Ice::Context& context = Ice::noExplicitContext)
     {
-        return _makePromiseOutgoing<int>(true, this, &actionsPrx::_iceI_printStringWithRet, iceP_str, context).get();
+        return _makePromiseOutgoing<int>(true, this, &modes::actionsPrx::_iceI_printStringWithRet, iceP_str, context).get();
     }
 
     template<template<typename> class P = ::std::promise>
-    auto printStringWithRetAsync(const ::std::string& iceP_str, const ::Ice::Context& context = ::Ice::noExplicitContext)
+    auto printStringWithRetAsync(const ::std::string& iceP_str, const ::Ice::Context& context = Ice::noExplicitContext)
         -> decltype(::std::declval<P<int>>().get_future())
     {
-        return _makePromiseOutgoing<int, P>(false, this, &actionsPrx::_iceI_printStringWithRet, iceP_str, context);
+        return _makePromiseOutgoing<int, P>(false, this, &modes::actionsPrx::_iceI_printStringWithRet, iceP_str, context);
     }
 
     ::std::function<void()>
@@ -265,23 +269,23 @@ public:
                             ::std::function<void(bool)> sent = nullptr,
                             const ::Ice::Context& context = Ice::noExplicitContext)
     {
-        return _makeLamdaOutgoing<int>(response, ex, sent, this, &actionsPrx::_iceI_printStringWithRet, iceP_str, context);
+        return _makeLamdaOutgoing<int>(response, ex, sent, this, &modes::actionsPrx::_iceI_printStringWithRet, iceP_str, context);
     }
 
     void _iceI_printStringWithRet(const ::std::shared_ptr<::IceInternal::OutgoingAsyncT<int>>&, const ::std::string&, const ::Ice::Context&);
 
     bool getnum(int iceP_n1, int iceP_n2, int& iceP_num, const ::Ice::Context& context = Ice::noExplicitContext)
     {
-        auto result = _makePromiseOutgoing<actions::GetnumResult>(true, this, &actionsPrx::_iceI_getnum, iceP_n1, iceP_n2, context).get();
+        auto result = _makePromiseOutgoing<::modes::actions::GetnumResult>(true, this, &modes::actionsPrx::_iceI_getnum, iceP_n1, iceP_n2, context).get();
         iceP_num = result.num;
         return result.returnValue;
     }
 
     template<template<typename> class P = ::std::promise>
-    auto getnumAsync(int iceP_n1, int iceP_n2, const ::Ice::Context& context = ::Ice::noExplicitContext)
-        -> decltype(::std::declval<P<actions::GetnumResult>>().get_future())
+    auto getnumAsync(int iceP_n1, int iceP_n2, const ::Ice::Context& context = Ice::noExplicitContext)
+        -> decltype(::std::declval<P<::modes::actions::GetnumResult>>().get_future())
     {
-        return _makePromiseOutgoing<actions::GetnumResult, P>(false, this, &actionsPrx::_iceI_getnum, iceP_n1, iceP_n2, context);
+        return _makePromiseOutgoing<::modes::actions::GetnumResult, P>(false, this, &modes::actionsPrx::_iceI_getnum, iceP_n1, iceP_n2, context);
     }
 
     ::std::function<void()>
@@ -291,25 +295,25 @@ public:
                 ::std::function<void(bool)> sent = nullptr,
                 const ::Ice::Context& context = Ice::noExplicitContext)
     {
-        auto responseCb = [response](actions::GetnumResult&& result)
+        auto responseCb = [response](::modes::actions::GetnumResult&& result)
         {
             response(result.returnValue, result.num);
         };
-        return _makeLamdaOutgoing<actions::GetnumResult>(responseCb, ex, sent, this, &actionsPrx::_iceI_getnum, iceP_n1, iceP_n2, context);
+        return _makeLamdaOutgoing<::modes::actions::GetnumResult>(responseCb, ex, sent, this, &modes::actionsPrx::_iceI_getnum, iceP_n1, iceP_n2, context);
     }
 
-    void _iceI_getnum(const ::std::shared_ptr<::IceInternal::OutgoingAsyncT<actions::GetnumResult>>&, int, int, const ::Ice::Context&);
+    void _iceI_getnum(const ::std::shared_ptr<::IceInternal::OutgoingAsyncT<::modes::actions::GetnumResult>>&, int, int, const ::Ice::Context&);
 
     int compute(int iceP_n1, int iceP_n2, const ::Ice::Context& context = Ice::noExplicitContext)
     {
-        return _makePromiseOutgoing<int>(true, this, &actionsPrx::_iceI_compute, iceP_n1, iceP_n2, context).get();
+        return _makePromiseOutgoing<int>(true, this, &modes::actionsPrx::_iceI_compute, iceP_n1, iceP_n2, context).get();
     }
 
     template<template<typename> class P = ::std::promise>
-    auto computeAsync(int iceP_n1, int iceP_n2, const ::Ice::Context& context = ::Ice::noExplicitContext)
+    auto computeAsync(int iceP_n1, int iceP_n2, const ::Ice::Context& context = Ice::noExplicitContext)
         -> decltype(::std::declval<P<int>>().get_future())
     {
-        return _makePromiseOutgoing<int, P>(false, this, &actionsPrx::_iceI_compute, iceP_n1, iceP_n2, context);
+        return _makePromiseOutgoing<int, P>(false, this, &modes::actionsPrx::_iceI_compute, iceP_n1, iceP_n2, context);
     }
 
     ::std::function<void()>
@@ -319,7 +323,7 @@ public:
                  ::std::function<void(bool)> sent = nullptr,
                  const ::Ice::Context& context = Ice::noExplicitContext)
     {
-        return _makeLamdaOutgoing<int>(response, ex, sent, this, &actionsPrx::_iceI_compute, iceP_n1, iceP_n2, context);
+        return _makeLamdaOutgoing<int>(response, ex, sent, this, &modes::actionsPrx::_iceI_compute, iceP_n1, iceP_n2, context);
     }
 
     void _iceI_compute(const ::std::shared_ptr<::IceInternal::OutgoingAsyncT<int>>&, int, int, const ::Ice::Context&);
@@ -338,76 +342,99 @@ class getActionPrx : public virtual ::Ice::Proxy<getActionPrx, ::Ice::ObjectPrx>
 {
 public:
 
-    ::std::shared_ptr<actionsPrx> getactions(const ::Ice::Context& context = Ice::noExplicitContext)
+    ::std::shared_ptr<::modes::actionsPrx> getactions(const ::Ice::Context& context = Ice::noExplicitContext)
     {
-        return _makePromiseOutgoing<::std::shared_ptr<actionsPrx>>(true, this, &getActionPrx::_iceI_getactions, context).get();
+        return _makePromiseOutgoing<::std::shared_ptr<::modes::actionsPrx>>(true, this, &modes::getActionPrx::_iceI_getactions, context).get();
     }
 
     template<template<typename> class P = ::std::promise>
-    auto getactionsAsync(const ::Ice::Context& context = ::Ice::noExplicitContext)
-        -> decltype(::std::declval<P<::std::shared_ptr<actionsPrx>>>().get_future())
+    auto getactionsAsync(const ::Ice::Context& context = Ice::noExplicitContext)
+        -> decltype(::std::declval<P<::std::shared_ptr<::modes::actionsPrx>>>().get_future())
     {
-        return _makePromiseOutgoing<::std::shared_ptr<actionsPrx>, P>(false, this, &getActionPrx::_iceI_getactions, context);
+        return _makePromiseOutgoing<::std::shared_ptr<::modes::actionsPrx>, P>(false, this, &modes::getActionPrx::_iceI_getactions, context);
     }
 
     ::std::function<void()>
-    getactionsAsync(::std::function<void(::std::shared_ptr<actionsPrx>)> response,
+    getactionsAsync(::std::function<void(::std::shared_ptr<::modes::actionsPrx>)> response,
                     ::std::function<void(::std::exception_ptr)> ex = nullptr,
                     ::std::function<void(bool)> sent = nullptr,
                     const ::Ice::Context& context = Ice::noExplicitContext)
     {
-        return _makeLamdaOutgoing<::std::shared_ptr<actionsPrx>>(response, ex, sent, this, &getActionPrx::_iceI_getactions, context);
+        return _makeLamdaOutgoing<::std::shared_ptr<::modes::actionsPrx>>(response, ex, sent, this, &modes::getActionPrx::_iceI_getactions, context);
     }
 
-    void _iceI_getactions(const ::std::shared_ptr<::IceInternal::OutgoingAsyncT<::std::shared_ptr<actionsPrx>>>&, const ::Ice::Context&);
+    void _iceI_getactions(const ::std::shared_ptr<::IceInternal::OutgoingAsyncT<::std::shared_ptr<::modes::actionsPrx>>>&, const ::Ice::Context&);
 
-    ::std::shared_ptr<stu> getStu(const ::std::shared_ptr<stu>& iceP_s, const ::Ice::Context& context = Ice::noExplicitContext)
+    ::std::shared_ptr<::modes::stu> getStu(const ::std::shared_ptr<::modes::stu>& iceP_s, const ::Ice::Context& context = Ice::noExplicitContext)
     {
-        return _makePromiseOutgoing<::std::shared_ptr<stu>>(true, this, &getActionPrx::_iceI_getStu, iceP_s, context).get();
+        return _makePromiseOutgoing<::std::shared_ptr<::modes::stu>>(true, this, &modes::getActionPrx::_iceI_getStu, iceP_s, context).get();
     }
 
     template<template<typename> class P = ::std::promise>
-    auto getStuAsync(const ::std::shared_ptr<stu>& iceP_s, const ::Ice::Context& context = ::Ice::noExplicitContext)
-        -> decltype(::std::declval<P<::std::shared_ptr<stu>>>().get_future())
+    auto getStuAsync(const ::std::shared_ptr<::modes::stu>& iceP_s, const ::Ice::Context& context = Ice::noExplicitContext)
+        -> decltype(::std::declval<P<::std::shared_ptr<::modes::stu>>>().get_future())
     {
-        return _makePromiseOutgoing<::std::shared_ptr<stu>, P>(false, this, &getActionPrx::_iceI_getStu, iceP_s, context);
+        return _makePromiseOutgoing<::std::shared_ptr<::modes::stu>, P>(false, this, &modes::getActionPrx::_iceI_getStu, iceP_s, context);
     }
 
     ::std::function<void()>
-    getStuAsync(const ::std::shared_ptr<stu>& iceP_s,
-                ::std::function<void(::std::shared_ptr<stu>)> response,
+    getStuAsync(const ::std::shared_ptr<::modes::stu>& iceP_s,
+                ::std::function<void(::std::shared_ptr<::modes::stu>)> response,
                 ::std::function<void(::std::exception_ptr)> ex = nullptr,
                 ::std::function<void(bool)> sent = nullptr,
                 const ::Ice::Context& context = Ice::noExplicitContext)
     {
-        return _makeLamdaOutgoing<::std::shared_ptr<stu>>(response, ex, sent, this, &getActionPrx::_iceI_getStu, iceP_s, context);
+        return _makeLamdaOutgoing<::std::shared_ptr<::modes::stu>>(response, ex, sent, this, &modes::getActionPrx::_iceI_getStu, iceP_s, context);
     }
 
-    void _iceI_getStu(const ::std::shared_ptr<::IceInternal::OutgoingAsyncT<::std::shared_ptr<stu>>>&, const ::std::shared_ptr<stu>&, const ::Ice::Context&);
+    void _iceI_getStu(const ::std::shared_ptr<::IceInternal::OutgoingAsyncT<::std::shared_ptr<::modes::stu>>>&, const ::std::shared_ptr<::modes::stu>&, const ::Ice::Context&);
 
-    node getNode(const node& iceP_n, const ::Ice::Context& context = Ice::noExplicitContext)
+    ::modes::node getNode(const ::modes::node& iceP_n, const ::Ice::Context& context = Ice::noExplicitContext)
     {
-        return _makePromiseOutgoing<node>(true, this, &getActionPrx::_iceI_getNode, iceP_n, context).get();
+        return _makePromiseOutgoing<::modes::node>(true, this, &modes::getActionPrx::_iceI_getNode, iceP_n, context).get();
     }
 
     template<template<typename> class P = ::std::promise>
-    auto getNodeAsync(const node& iceP_n, const ::Ice::Context& context = ::Ice::noExplicitContext)
-        -> decltype(::std::declval<P<node>>().get_future())
+    auto getNodeAsync(const ::modes::node& iceP_n, const ::Ice::Context& context = Ice::noExplicitContext)
+        -> decltype(::std::declval<P<::modes::node>>().get_future())
     {
-        return _makePromiseOutgoing<node, P>(false, this, &getActionPrx::_iceI_getNode, iceP_n, context);
+        return _makePromiseOutgoing<::modes::node, P>(false, this, &modes::getActionPrx::_iceI_getNode, iceP_n, context);
     }
 
     ::std::function<void()>
-    getNodeAsync(const node& iceP_n,
-                 ::std::function<void(node)> response,
+    getNodeAsync(const ::modes::node& iceP_n,
+                 ::std::function<void(::modes::node)> response,
                  ::std::function<void(::std::exception_ptr)> ex = nullptr,
                  ::std::function<void(bool)> sent = nullptr,
                  const ::Ice::Context& context = Ice::noExplicitContext)
     {
-        return _makeLamdaOutgoing<node>(response, ex, sent, this, &getActionPrx::_iceI_getNode, iceP_n, context);
+        return _makeLamdaOutgoing<::modes::node>(response, ex, sent, this, &modes::getActionPrx::_iceI_getNode, iceP_n, context);
     }
 
-    void _iceI_getNode(const ::std::shared_ptr<::IceInternal::OutgoingAsyncT<node>>&, const node&, const ::Ice::Context&);
+    void _iceI_getNode(const ::std::shared_ptr<::IceInternal::OutgoingAsyncT<::modes::node>>&, const ::modes::node&, const ::Ice::Context&);
+
+    ::Ice::SliceChecksumDict getChecksums(const ::Ice::Context& context = Ice::noExplicitContext)
+    {
+        return _makePromiseOutgoing<::Ice::SliceChecksumDict>(true, this, &modes::getActionPrx::_iceI_getChecksums, context).get();
+    }
+
+    template<template<typename> class P = ::std::promise>
+    auto getChecksumsAsync(const ::Ice::Context& context = Ice::noExplicitContext)
+        -> decltype(::std::declval<P<::Ice::SliceChecksumDict>>().get_future())
+    {
+        return _makePromiseOutgoing<::Ice::SliceChecksumDict, P>(false, this, &modes::getActionPrx::_iceI_getChecksums, context);
+    }
+
+    ::std::function<void()>
+    getChecksumsAsync(::std::function<void(::Ice::SliceChecksumDict)> response,
+                      ::std::function<void(::std::exception_ptr)> ex = nullptr,
+                      ::std::function<void(bool)> sent = nullptr,
+                      const ::Ice::Context& context = Ice::noExplicitContext)
+    {
+        return _makeLamdaOutgoing<::Ice::SliceChecksumDict>(response, ex, sent, this, &modes::getActionPrx::_iceI_getChecksums, context);
+    }
+
+    void _iceI_getChecksums(const ::std::shared_ptr<::IceInternal::OutgoingAsyncT<::Ice::SliceChecksumDict>>&, const ::Ice::Context&);
 
     static const ::std::string& ice_staticId();
 
@@ -517,29 +544,29 @@ namespace modes
 {
 
 class actions;
-::Ice::Object* upCast(actions*);
-typedef ::IceInternal::Handle< actions> actionsPtr;
+::Ice::Object* upCast(::modes::actions*);
+typedef ::IceInternal::Handle< ::modes::actions> actionsPtr;
 typedef ::IceInternal::ProxyHandle< ::IceProxy::modes::actions> actionsPrx;
 typedef actionsPrx actionsPrxPtr;
 void _icePatchObjectPtr(actionsPtr&, const ::Ice::ObjectPtr&);
 
 class base;
-::Ice::Object* upCast(base*);
-typedef ::IceInternal::Handle< base> basePtr;
+::Ice::Object* upCast(::modes::base*);
+typedef ::IceInternal::Handle< ::modes::base> basePtr;
 typedef ::IceInternal::ProxyHandle< ::IceProxy::modes::base> basePrx;
 typedef basePrx basePrxPtr;
 void _icePatchObjectPtr(basePtr&, const ::Ice::ObjectPtr&);
 
 class stu;
-::Ice::Object* upCast(stu*);
-typedef ::IceInternal::Handle< stu> stuPtr;
+::Ice::Object* upCast(::modes::stu*);
+typedef ::IceInternal::Handle< ::modes::stu> stuPtr;
 typedef ::IceInternal::ProxyHandle< ::IceProxy::modes::stu> stuPrx;
 typedef stuPrx stuPrxPtr;
 void _icePatchObjectPtr(stuPtr&, const ::Ice::ObjectPtr&);
 
 class getAction;
-::Ice::Object* upCast(getAction*);
-typedef ::IceInternal::Handle< getAction> getActionPtr;
+::Ice::Object* upCast(::modes::getAction*);
+typedef ::IceInternal::Handle< ::modes::getAction> getActionPtr;
 typedef ::IceInternal::ProxyHandle< ::IceProxy::modes::getAction> getActionPrx;
 typedef getActionPrx getActionPrxPtr;
 void _icePatchObjectPtr(getActionPtr&, const ::Ice::ObjectPtr&);
@@ -674,6 +701,9 @@ typedef ::IceUtil::Handle< Callback_getAction_getStu_Base> Callback_getAction_ge
 
 class Callback_getAction_getNode_Base : public virtual ::IceInternal::CallbackBase { };
 typedef ::IceUtil::Handle< Callback_getAction_getNode_Base> Callback_getAction_getNodePtr;
+
+class Callback_getAction_getChecksums_Base : public virtual ::IceInternal::CallbackBase { };
+typedef ::IceUtil::Handle< Callback_getAction_getChecksums_Base> Callback_getAction_getChecksumsPtr;
 
 }
 
@@ -986,6 +1016,44 @@ private:
 
 public:
 
+    ::Ice::SliceChecksumDict getChecksums(const ::Ice::Context& context = ::Ice::noExplicitContext)
+    {
+        return end_getChecksums(_iceI_begin_getChecksums(context, ::IceInternal::dummyCallback, 0, true));
+    }
+
+    ::Ice::AsyncResultPtr begin_getChecksums(const ::Ice::Context& context = ::Ice::noExplicitContext)
+    {
+        return _iceI_begin_getChecksums(context, ::IceInternal::dummyCallback, 0);
+    }
+
+    ::Ice::AsyncResultPtr begin_getChecksums(const ::Ice::CallbackPtr& del, const ::Ice::LocalObjectPtr& cookie = 0)
+    {
+        return _iceI_begin_getChecksums(::Ice::noExplicitContext, del, cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_getChecksums(const ::Ice::Context& context, const ::Ice::CallbackPtr& del, const ::Ice::LocalObjectPtr& cookie = 0)
+    {
+        return _iceI_begin_getChecksums(context, del, cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_getChecksums(const ::modes::Callback_getAction_getChecksumsPtr& del, const ::Ice::LocalObjectPtr& cookie = 0)
+    {
+        return _iceI_begin_getChecksums(::Ice::noExplicitContext, del, cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_getChecksums(const ::Ice::Context& context, const ::modes::Callback_getAction_getChecksumsPtr& del, const ::Ice::LocalObjectPtr& cookie = 0)
+    {
+        return _iceI_begin_getChecksums(context, del, cookie);
+    }
+
+    ::Ice::SliceChecksumDict end_getChecksums(const ::Ice::AsyncResultPtr&);
+
+private:
+
+    ::Ice::AsyncResultPtr _iceI_begin_getChecksums(const ::Ice::Context&, const ::IceInternal::CallbackBasePtr&, const ::Ice::LocalObjectPtr& cookie = 0, bool sync = false);
+
+public:
+
     static const ::std::string& ice_staticId();
 
 protected:
@@ -1094,7 +1162,7 @@ inline bool operator<(const base& lhs, const base& rhs)
     return static_cast<const ::Ice::Object&>(lhs) < static_cast<const ::Ice::Object&>(rhs);
 }
 
-class stu : public base
+class stu : public ::modes::base
 {
 public:
 
@@ -1159,14 +1227,17 @@ public:
 
     static const ::std::string& ice_staticId();
 
-    virtual actionsPrx getactions(const ::Ice::Current& = ::Ice::emptyCurrent) = 0;
+    virtual ::modes::actionsPrx getactions(const ::Ice::Current& = ::Ice::emptyCurrent) = 0;
     bool _iceD_getactions(::IceInternal::Incoming&, const ::Ice::Current&);
 
-    virtual stuPtr getStu(const stuPtr&, const ::Ice::Current& = ::Ice::emptyCurrent) = 0;
+    virtual ::modes::stuPtr getStu(const ::modes::stuPtr&, const ::Ice::Current& = ::Ice::emptyCurrent) = 0;
     bool _iceD_getStu(::IceInternal::Incoming&, const ::Ice::Current&);
 
-    virtual node getNode(const node&, const ::Ice::Current& = ::Ice::emptyCurrent) = 0;
+    virtual ::modes::node getNode(const ::modes::node&, const ::Ice::Current& = ::Ice::emptyCurrent) = 0;
     bool _iceD_getNode(::IceInternal::Incoming&, const ::Ice::Current&);
+
+    virtual ::Ice::SliceChecksumDict getChecksums(const ::Ice::Current& = ::Ice::emptyCurrent) = 0;
+    bool _iceD_getChecksums(::IceInternal::Incoming&, const ::Ice::Current&);
 
     virtual bool _iceDispatch(::IceInternal::Incoming&, const ::Ice::Current&);
 
@@ -1360,7 +1431,7 @@ public:
 
     virtual void completed(const ::Ice::AsyncResultPtr& result) const
     {
-        actionsPrx proxy = actionsPrx::uncheckedCast(result->getProxy());
+        ::modes::actionsPrx proxy = ::modes::actionsPrx::uncheckedCast(result->getProxy());
         ::Ice::Int ret;
         try
         {
@@ -1412,7 +1483,7 @@ public:
 
     virtual void completed(const ::Ice::AsyncResultPtr& result) const
     {
-        actionsPrx proxy = actionsPrx::uncheckedCast(result->getProxy());
+        ::modes::actionsPrx proxy = ::modes::actionsPrx::uncheckedCast(result->getProxy());
         ::Ice::Int ret;
         try
         {
@@ -1464,7 +1535,7 @@ public:
 
     virtual void completed(const ::Ice::AsyncResultPtr& result) const
     {
-        actionsPrx proxy = actionsPrx::uncheckedCast(result->getProxy());
+        ::modes::actionsPrx proxy = ::modes::actionsPrx::uncheckedCast(result->getProxy());
         ::Ice::Int iceP_num;
         bool ret;
         try
@@ -1517,7 +1588,7 @@ public:
 
     virtual void completed(const ::Ice::AsyncResultPtr& result) const
     {
-        actionsPrx proxy = actionsPrx::uncheckedCast(result->getProxy());
+        ::modes::actionsPrx proxy = ::modes::actionsPrx::uncheckedCast(result->getProxy());
         ::Ice::Int iceP_num;
         bool ret;
         try
@@ -1570,7 +1641,7 @@ public:
 
     virtual void completed(const ::Ice::AsyncResultPtr& result) const
     {
-        actionsPrx proxy = actionsPrx::uncheckedCast(result->getProxy());
+        ::modes::actionsPrx proxy = ::modes::actionsPrx::uncheckedCast(result->getProxy());
         ::Ice::Int ret;
         try
         {
@@ -1622,7 +1693,7 @@ public:
 
     virtual void completed(const ::Ice::AsyncResultPtr& result) const
     {
-        actionsPrx proxy = actionsPrx::uncheckedCast(result->getProxy());
+        ::modes::actionsPrx proxy = ::modes::actionsPrx::uncheckedCast(result->getProxy());
         ::Ice::Int ret;
         try
         {
@@ -1665,7 +1736,7 @@ public:
 
     typedef void (T::*Exception)(const ::Ice::Exception&);
     typedef void (T::*Sent)(bool);
-    typedef void (T::*Response)(const actionsPrx&);
+    typedef void (T::*Response)(const ::modes::actionsPrx&);
 
     CallbackNC_getAction_getactions(const TPtr& obj, Response cb, Exception excb, Sent sentcb)
         : ::IceInternal::TwowayCallbackNC<T>(obj, cb != 0, excb, sentcb), _response(cb)
@@ -1674,8 +1745,8 @@ public:
 
     virtual void completed(const ::Ice::AsyncResultPtr& result) const
     {
-        getActionPrx proxy = getActionPrx::uncheckedCast(result->getProxy());
-        actionsPrx ret;
+        ::modes::getActionPrx proxy = ::modes::getActionPrx::uncheckedCast(result->getProxy());
+        ::modes::actionsPrx ret;
         try
         {
             ret = proxy->end_getactions(result);
@@ -1697,13 +1768,13 @@ private:
 };
 
 template<class T> Callback_getAction_getactionsPtr
-newCallback_getAction_getactions(const IceUtil::Handle<T>& instance, void (T::*cb)(const actionsPrx&), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+newCallback_getAction_getactions(const IceUtil::Handle<T>& instance, void (T::*cb)(const ::modes::actionsPrx&), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
 {
     return new CallbackNC_getAction_getactions<T>(instance, cb, excb, sentcb);
 }
 
 template<class T> Callback_getAction_getactionsPtr
-newCallback_getAction_getactions(T* instance, void (T::*cb)(const actionsPrx&), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+newCallback_getAction_getactions(T* instance, void (T::*cb)(const ::modes::actionsPrx&), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
 {
     return new CallbackNC_getAction_getactions<T>(instance, cb, excb, sentcb);
 }
@@ -1717,7 +1788,7 @@ public:
 
     typedef void (T::*Exception)(const ::Ice::Exception& , const CT&);
     typedef void (T::*Sent)(bool , const CT&);
-    typedef void (T::*Response)(const actionsPrx&, const CT&);
+    typedef void (T::*Response)(const ::modes::actionsPrx&, const CT&);
 
     Callback_getAction_getactions(const TPtr& obj, Response cb, Exception excb, Sent sentcb)
         : ::IceInternal::TwowayCallback<T, CT>(obj, cb != 0, excb, sentcb), _response(cb)
@@ -1726,8 +1797,8 @@ public:
 
     virtual void completed(const ::Ice::AsyncResultPtr& result) const
     {
-        getActionPrx proxy = getActionPrx::uncheckedCast(result->getProxy());
-        actionsPrx ret;
+        ::modes::getActionPrx proxy = ::modes::getActionPrx::uncheckedCast(result->getProxy());
+        ::modes::actionsPrx ret;
         try
         {
             ret = proxy->end_getactions(result);
@@ -1749,13 +1820,13 @@ private:
 };
 
 template<class T, typename CT> Callback_getAction_getactionsPtr
-newCallback_getAction_getactions(const IceUtil::Handle<T>& instance, void (T::*cb)(const actionsPrx&, const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+newCallback_getAction_getactions(const IceUtil::Handle<T>& instance, void (T::*cb)(const ::modes::actionsPrx&, const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
 {
     return new Callback_getAction_getactions<T, CT>(instance, cb, excb, sentcb);
 }
 
 template<class T, typename CT> Callback_getAction_getactionsPtr
-newCallback_getAction_getactions(T* instance, void (T::*cb)(const actionsPrx&, const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+newCallback_getAction_getactions(T* instance, void (T::*cb)(const ::modes::actionsPrx&, const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
 {
     return new Callback_getAction_getactions<T, CT>(instance, cb, excb, sentcb);
 }
@@ -1769,7 +1840,7 @@ public:
 
     typedef void (T::*Exception)(const ::Ice::Exception&);
     typedef void (T::*Sent)(bool);
-    typedef void (T::*Response)(const stuPtr&);
+    typedef void (T::*Response)(const ::modes::stuPtr&);
 
     CallbackNC_getAction_getStu(const TPtr& obj, Response cb, Exception excb, Sent sentcb)
         : ::IceInternal::TwowayCallbackNC<T>(obj, cb != 0, excb, sentcb), _response(cb)
@@ -1778,8 +1849,8 @@ public:
 
     virtual void completed(const ::Ice::AsyncResultPtr& result) const
     {
-        getActionPrx proxy = getActionPrx::uncheckedCast(result->getProxy());
-        stuPtr ret;
+        ::modes::getActionPrx proxy = ::modes::getActionPrx::uncheckedCast(result->getProxy());
+        ::modes::stuPtr ret;
         try
         {
             ret = proxy->end_getStu(result);
@@ -1801,13 +1872,13 @@ private:
 };
 
 template<class T> Callback_getAction_getStuPtr
-newCallback_getAction_getStu(const IceUtil::Handle<T>& instance, void (T::*cb)(const stuPtr&), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+newCallback_getAction_getStu(const IceUtil::Handle<T>& instance, void (T::*cb)(const ::modes::stuPtr&), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
 {
     return new CallbackNC_getAction_getStu<T>(instance, cb, excb, sentcb);
 }
 
 template<class T> Callback_getAction_getStuPtr
-newCallback_getAction_getStu(T* instance, void (T::*cb)(const stuPtr&), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+newCallback_getAction_getStu(T* instance, void (T::*cb)(const ::modes::stuPtr&), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
 {
     return new CallbackNC_getAction_getStu<T>(instance, cb, excb, sentcb);
 }
@@ -1821,7 +1892,7 @@ public:
 
     typedef void (T::*Exception)(const ::Ice::Exception& , const CT&);
     typedef void (T::*Sent)(bool , const CT&);
-    typedef void (T::*Response)(const stuPtr&, const CT&);
+    typedef void (T::*Response)(const ::modes::stuPtr&, const CT&);
 
     Callback_getAction_getStu(const TPtr& obj, Response cb, Exception excb, Sent sentcb)
         : ::IceInternal::TwowayCallback<T, CT>(obj, cb != 0, excb, sentcb), _response(cb)
@@ -1830,8 +1901,8 @@ public:
 
     virtual void completed(const ::Ice::AsyncResultPtr& result) const
     {
-        getActionPrx proxy = getActionPrx::uncheckedCast(result->getProxy());
-        stuPtr ret;
+        ::modes::getActionPrx proxy = ::modes::getActionPrx::uncheckedCast(result->getProxy());
+        ::modes::stuPtr ret;
         try
         {
             ret = proxy->end_getStu(result);
@@ -1853,13 +1924,13 @@ private:
 };
 
 template<class T, typename CT> Callback_getAction_getStuPtr
-newCallback_getAction_getStu(const IceUtil::Handle<T>& instance, void (T::*cb)(const stuPtr&, const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+newCallback_getAction_getStu(const IceUtil::Handle<T>& instance, void (T::*cb)(const ::modes::stuPtr&, const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
 {
     return new Callback_getAction_getStu<T, CT>(instance, cb, excb, sentcb);
 }
 
 template<class T, typename CT> Callback_getAction_getStuPtr
-newCallback_getAction_getStu(T* instance, void (T::*cb)(const stuPtr&, const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+newCallback_getAction_getStu(T* instance, void (T::*cb)(const ::modes::stuPtr&, const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
 {
     return new Callback_getAction_getStu<T, CT>(instance, cb, excb, sentcb);
 }
@@ -1873,7 +1944,7 @@ public:
 
     typedef void (T::*Exception)(const ::Ice::Exception&);
     typedef void (T::*Sent)(bool);
-    typedef void (T::*Response)(const node&);
+    typedef void (T::*Response)(const ::modes::node&);
 
     CallbackNC_getAction_getNode(const TPtr& obj, Response cb, Exception excb, Sent sentcb)
         : ::IceInternal::TwowayCallbackNC<T>(obj, cb != 0, excb, sentcb), _response(cb)
@@ -1882,8 +1953,8 @@ public:
 
     virtual void completed(const ::Ice::AsyncResultPtr& result) const
     {
-        getActionPrx proxy = getActionPrx::uncheckedCast(result->getProxy());
-        node ret;
+        ::modes::getActionPrx proxy = ::modes::getActionPrx::uncheckedCast(result->getProxy());
+        ::modes::node ret;
         try
         {
             ret = proxy->end_getNode(result);
@@ -1905,13 +1976,13 @@ private:
 };
 
 template<class T> Callback_getAction_getNodePtr
-newCallback_getAction_getNode(const IceUtil::Handle<T>& instance, void (T::*cb)(const node&), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+newCallback_getAction_getNode(const IceUtil::Handle<T>& instance, void (T::*cb)(const ::modes::node&), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
 {
     return new CallbackNC_getAction_getNode<T>(instance, cb, excb, sentcb);
 }
 
 template<class T> Callback_getAction_getNodePtr
-newCallback_getAction_getNode(T* instance, void (T::*cb)(const node&), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+newCallback_getAction_getNode(T* instance, void (T::*cb)(const ::modes::node&), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
 {
     return new CallbackNC_getAction_getNode<T>(instance, cb, excb, sentcb);
 }
@@ -1925,7 +1996,7 @@ public:
 
     typedef void (T::*Exception)(const ::Ice::Exception& , const CT&);
     typedef void (T::*Sent)(bool , const CT&);
-    typedef void (T::*Response)(const node&, const CT&);
+    typedef void (T::*Response)(const ::modes::node&, const CT&);
 
     Callback_getAction_getNode(const TPtr& obj, Response cb, Exception excb, Sent sentcb)
         : ::IceInternal::TwowayCallback<T, CT>(obj, cb != 0, excb, sentcb), _response(cb)
@@ -1934,8 +2005,8 @@ public:
 
     virtual void completed(const ::Ice::AsyncResultPtr& result) const
     {
-        getActionPrx proxy = getActionPrx::uncheckedCast(result->getProxy());
-        node ret;
+        ::modes::getActionPrx proxy = ::modes::getActionPrx::uncheckedCast(result->getProxy());
+        ::modes::node ret;
         try
         {
             ret = proxy->end_getNode(result);
@@ -1957,15 +2028,119 @@ private:
 };
 
 template<class T, typename CT> Callback_getAction_getNodePtr
-newCallback_getAction_getNode(const IceUtil::Handle<T>& instance, void (T::*cb)(const node&, const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+newCallback_getAction_getNode(const IceUtil::Handle<T>& instance, void (T::*cb)(const ::modes::node&, const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
 {
     return new Callback_getAction_getNode<T, CT>(instance, cb, excb, sentcb);
 }
 
 template<class T, typename CT> Callback_getAction_getNodePtr
-newCallback_getAction_getNode(T* instance, void (T::*cb)(const node&, const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+newCallback_getAction_getNode(T* instance, void (T::*cb)(const ::modes::node&, const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
 {
     return new Callback_getAction_getNode<T, CT>(instance, cb, excb, sentcb);
+}
+
+template<class T>
+class CallbackNC_getAction_getChecksums : public Callback_getAction_getChecksums_Base, public ::IceInternal::TwowayCallbackNC<T>
+{
+public:
+
+    typedef IceUtil::Handle<T> TPtr;
+
+    typedef void (T::*Exception)(const ::Ice::Exception&);
+    typedef void (T::*Sent)(bool);
+    typedef void (T::*Response)(const ::Ice::SliceChecksumDict&);
+
+    CallbackNC_getAction_getChecksums(const TPtr& obj, Response cb, Exception excb, Sent sentcb)
+        : ::IceInternal::TwowayCallbackNC<T>(obj, cb != 0, excb, sentcb), _response(cb)
+    {
+    }
+
+    virtual void completed(const ::Ice::AsyncResultPtr& result) const
+    {
+        ::modes::getActionPrx proxy = ::modes::getActionPrx::uncheckedCast(result->getProxy());
+        ::Ice::SliceChecksumDict ret;
+        try
+        {
+            ret = proxy->end_getChecksums(result);
+        }
+        catch(const ::Ice::Exception& ex)
+        {
+            ::IceInternal::CallbackNC<T>::exception(result, ex);
+            return;
+        }
+        if(_response)
+        {
+            (::IceInternal::CallbackNC<T>::_callback.get()->*_response)(ret);
+        }
+    }
+
+private:
+
+    Response _response;
+};
+
+template<class T> Callback_getAction_getChecksumsPtr
+newCallback_getAction_getChecksums(const IceUtil::Handle<T>& instance, void (T::*cb)(const ::Ice::SliceChecksumDict&), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_getAction_getChecksums<T>(instance, cb, excb, sentcb);
+}
+
+template<class T> Callback_getAction_getChecksumsPtr
+newCallback_getAction_getChecksums(T* instance, void (T::*cb)(const ::Ice::SliceChecksumDict&), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_getAction_getChecksums<T>(instance, cb, excb, sentcb);
+}
+
+template<class T, typename CT>
+class Callback_getAction_getChecksums : public Callback_getAction_getChecksums_Base, public ::IceInternal::TwowayCallback<T, CT>
+{
+public:
+
+    typedef IceUtil::Handle<T> TPtr;
+
+    typedef void (T::*Exception)(const ::Ice::Exception& , const CT&);
+    typedef void (T::*Sent)(bool , const CT&);
+    typedef void (T::*Response)(const ::Ice::SliceChecksumDict&, const CT&);
+
+    Callback_getAction_getChecksums(const TPtr& obj, Response cb, Exception excb, Sent sentcb)
+        : ::IceInternal::TwowayCallback<T, CT>(obj, cb != 0, excb, sentcb), _response(cb)
+    {
+    }
+
+    virtual void completed(const ::Ice::AsyncResultPtr& result) const
+    {
+        ::modes::getActionPrx proxy = ::modes::getActionPrx::uncheckedCast(result->getProxy());
+        ::Ice::SliceChecksumDict ret;
+        try
+        {
+            ret = proxy->end_getChecksums(result);
+        }
+        catch(const ::Ice::Exception& ex)
+        {
+            ::IceInternal::Callback<T, CT>::exception(result, ex);
+            return;
+        }
+        if(_response)
+        {
+            (::IceInternal::Callback<T, CT>::_callback.get()->*_response)(ret, CT::dynamicCast(result->getCookie()));
+        }
+    }
+
+private:
+
+    Response _response;
+};
+
+template<class T, typename CT> Callback_getAction_getChecksumsPtr
+newCallback_getAction_getChecksums(const IceUtil::Handle<T>& instance, void (T::*cb)(const ::Ice::SliceChecksumDict&, const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_getAction_getChecksums<T, CT>(instance, cb, excb, sentcb);
+}
+
+template<class T, typename CT> Callback_getAction_getChecksumsPtr
+newCallback_getAction_getChecksums(T* instance, void (T::*cb)(const ::Ice::SliceChecksumDict&, const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_getAction_getChecksums<T, CT>(instance, cb, excb, sentcb);
 }
 
 }

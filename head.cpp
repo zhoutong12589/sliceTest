@@ -85,6 +85,7 @@ const ::std::string iceC_modes_getAction_ids[2] =
 };
 const ::std::string iceC_modes_getAction_ops[] =
 {
+    "getChecksums",
     "getNode",
     "getStu",
     "getactions",
@@ -96,6 +97,7 @@ const ::std::string iceC_modes_getAction_ops[] =
 const ::std::string iceC_modes_getAction_getactions_name = "getactions";
 const ::std::string iceC_modes_getAction_getStu_name = "getStu";
 const ::std::string iceC_modes_getAction_getNode_name = "getNode";
+const ::std::string iceC_modes_getAction_getChecksums_name = "getChecksums";
 
 }
 
@@ -271,7 +273,7 @@ modes::getAction::_iceD_getactions(::IceInternal::Incoming& inS, const ::Ice::Cu
 {
     _iceCheckMode(::Ice::OperationMode::Normal, current.mode);
     inS.readEmptyParams();
-    ::std::shared_ptr<actionsPrx> ret = this->getactions(current);
+    ::std::shared_ptr<::modes::actionsPrx> ret = this->getactions(current);
     auto ostr = inS.startWriteParams();
     ostr->writeAll(ret);
     inS.endWriteParams();
@@ -283,11 +285,11 @@ modes::getAction::_iceD_getStu(::IceInternal::Incoming& inS, const ::Ice::Curren
 {
     _iceCheckMode(::Ice::OperationMode::Normal, current.mode);
     auto istr = inS.startReadParams();
-    ::std::shared_ptr<stu> iceP_s;
+    ::std::shared_ptr<::modes::stu> iceP_s;
     istr->readAll(iceP_s);
     istr->readPendingValues();
     inS.endReadParams();
-    ::std::shared_ptr<stu> ret = this->getStu(::std::move(iceP_s), current);
+    ::std::shared_ptr<::modes::stu> ret = this->getStu(::std::move(iceP_s), current);
     auto ostr = inS.startWriteParams();
     ostr->writeAll(ret);
     ostr->writePendingValues();
@@ -300,10 +302,22 @@ modes::getAction::_iceD_getNode(::IceInternal::Incoming& inS, const ::Ice::Curre
 {
     _iceCheckMode(::Ice::OperationMode::Normal, current.mode);
     auto istr = inS.startReadParams();
-    node iceP_n;
+    ::modes::node iceP_n;
     istr->readAll(iceP_n);
     inS.endReadParams();
-    node ret = this->getNode(::std::move(iceP_n), current);
+    ::modes::node ret = this->getNode(::std::move(iceP_n), current);
+    auto ostr = inS.startWriteParams();
+    ostr->writeAll(ret);
+    inS.endWriteParams();
+    return true;
+}
+
+bool
+modes::getAction::_iceD_getChecksums(::IceInternal::Incoming& inS, const ::Ice::Current& current)
+{
+    _iceCheckMode(::Ice::OperationMode::Normal, current.mode);
+    inS.readEmptyParams();
+    ::Ice::SliceChecksumDict ret = this->getChecksums(current);
     auto ostr = inS.startWriteParams();
     ostr->writeAll(ret);
     inS.endWriteParams();
@@ -313,7 +327,7 @@ modes::getAction::_iceD_getNode(::IceInternal::Incoming& inS, const ::Ice::Curre
 bool
 modes::getAction::_iceDispatch(::IceInternal::Incoming& in, const ::Ice::Current& current)
 {
-    ::std::pair<const ::std::string*, const ::std::string*> r = ::std::equal_range(iceC_modes_getAction_ops, iceC_modes_getAction_ops + 7, current.operation);
+    ::std::pair<const ::std::string*, const ::std::string*> r = ::std::equal_range(iceC_modes_getAction_ops, iceC_modes_getAction_ops + 8, current.operation);
     if(r.first == r.second)
     {
         throw ::Ice::OperationNotExistException(__FILE__, __LINE__, current.id, current.facet, current.operation);
@@ -323,29 +337,33 @@ modes::getAction::_iceDispatch(::IceInternal::Incoming& in, const ::Ice::Current
     {
         case 0:
         {
-            return _iceD_getNode(in, current);
+            return _iceD_getChecksums(in, current);
         }
         case 1:
         {
-            return _iceD_getStu(in, current);
+            return _iceD_getNode(in, current);
         }
         case 2:
         {
-            return _iceD_getactions(in, current);
+            return _iceD_getStu(in, current);
         }
         case 3:
         {
-            return _iceD_ice_id(in, current);
+            return _iceD_getactions(in, current);
         }
         case 4:
         {
-            return _iceD_ice_ids(in, current);
+            return _iceD_ice_id(in, current);
         }
         case 5:
         {
-            return _iceD_ice_isA(in, current);
+            return _iceD_ice_ids(in, current);
         }
         case 6:
+        {
+            return _iceD_ice_isA(in, current);
+        }
+        case 7:
         {
             return _iceD_ice_ping(in, current);
         }
@@ -403,7 +421,7 @@ modes::actionsPrx::_iceI_printStringWithRet(const ::std::shared_ptr<::IceInterna
 }
 
 void
-modes::actionsPrx::_iceI_getnum(const ::std::shared_ptr<::IceInternal::OutgoingAsyncT<actions::GetnumResult>>& outAsync, int iceP_n1, int iceP_n2, const ::Ice::Context& context)
+modes::actionsPrx::_iceI_getnum(const ::std::shared_ptr<::IceInternal::OutgoingAsyncT<::modes::actions::GetnumResult>>& outAsync, int iceP_n1, int iceP_n2, const ::Ice::Context& context)
 {
     _checkTwowayOnly(iceC_modes_actions_getnum_name);
     outAsync->invoke(iceC_modes_actions_getnum_name, ::Ice::OperationMode::Normal, ::Ice::FormatType::DefaultFormat, context,
@@ -414,7 +432,7 @@ modes::actionsPrx::_iceI_getnum(const ::std::shared_ptr<::IceInternal::OutgoingA
         nullptr,
         [](::Ice::InputStream* istr)
         {
-            actions::GetnumResult v;
+            ::modes::actions::GetnumResult v;
             istr->readAll(v.num, v.returnValue);
             return v;
         });
@@ -441,11 +459,11 @@ modes::actionsPrx::_newInstance() const
 const ::std::string&
 modes::actionsPrx::ice_staticId()
 {
-    return actions::ice_staticId();
+    return modes::actions::ice_staticId();
 }
 
 void
-modes::getActionPrx::_iceI_getactions(const ::std::shared_ptr<::IceInternal::OutgoingAsyncT<::std::shared_ptr<actionsPrx>>>& outAsync, const ::Ice::Context& context)
+modes::getActionPrx::_iceI_getactions(const ::std::shared_ptr<::IceInternal::OutgoingAsyncT<::std::shared_ptr<::modes::actionsPrx>>>& outAsync, const ::Ice::Context& context)
 {
     _checkTwowayOnly(iceC_modes_getAction_getactions_name);
     outAsync->invoke(iceC_modes_getAction_getactions_name, ::Ice::OperationMode::Normal, ::Ice::FormatType::DefaultFormat, context,
@@ -454,7 +472,7 @@ modes::getActionPrx::_iceI_getactions(const ::std::shared_ptr<::IceInternal::Out
 }
 
 void
-modes::getActionPrx::_iceI_getStu(const ::std::shared_ptr<::IceInternal::OutgoingAsyncT<::std::shared_ptr<stu>>>& outAsync, const ::std::shared_ptr<stu>& iceP_s, const ::Ice::Context& context)
+modes::getActionPrx::_iceI_getStu(const ::std::shared_ptr<::IceInternal::OutgoingAsyncT<::std::shared_ptr<::modes::stu>>>& outAsync, const ::std::shared_ptr<::modes::stu>& iceP_s, const ::Ice::Context& context)
 {
     _checkTwowayOnly(iceC_modes_getAction_getStu_name);
     outAsync->invoke(iceC_modes_getAction_getStu_name, ::Ice::OperationMode::Normal, ::Ice::FormatType::DefaultFormat, context,
@@ -466,7 +484,7 @@ modes::getActionPrx::_iceI_getStu(const ::std::shared_ptr<::IceInternal::Outgoin
         nullptr,
         [](::Ice::InputStream* istr)
         {
-            ::std::shared_ptr<stu> ret;
+            ::std::shared_ptr<::modes::stu> ret;
             istr->readAll(ret);
             istr->readPendingValues();
             return ret;
@@ -474,7 +492,7 @@ modes::getActionPrx::_iceI_getStu(const ::std::shared_ptr<::IceInternal::Outgoin
 }
 
 void
-modes::getActionPrx::_iceI_getNode(const ::std::shared_ptr<::IceInternal::OutgoingAsyncT<node>>& outAsync, const node& iceP_n, const ::Ice::Context& context)
+modes::getActionPrx::_iceI_getNode(const ::std::shared_ptr<::IceInternal::OutgoingAsyncT<::modes::node>>& outAsync, const ::modes::node& iceP_n, const ::Ice::Context& context)
 {
     _checkTwowayOnly(iceC_modes_getAction_getNode_name);
     outAsync->invoke(iceC_modes_getAction_getNode_name, ::Ice::OperationMode::Normal, ::Ice::FormatType::DefaultFormat, context,
@@ -482,6 +500,15 @@ modes::getActionPrx::_iceI_getNode(const ::std::shared_ptr<::IceInternal::Outgoi
         {
             ostr->writeAll(iceP_n);
         },
+        nullptr);
+}
+
+void
+modes::getActionPrx::_iceI_getChecksums(const ::std::shared_ptr<::IceInternal::OutgoingAsyncT<::Ice::SliceChecksumDict>>& outAsync, const ::Ice::Context& context)
+{
+    _checkTwowayOnly(iceC_modes_getAction_getChecksums_name);
+    outAsync->invoke(iceC_modes_getAction_getChecksums_name, ::Ice::OperationMode::Normal, ::Ice::FormatType::DefaultFormat, context,
+        nullptr,
         nullptr);
 }
 
@@ -494,7 +521,7 @@ modes::getActionPrx::_newInstance() const
 const ::std::string&
 modes::getActionPrx::ice_staticId()
 {
-    return getAction::ice_staticId();
+    return modes::getAction::ice_staticId();
 }
 
 namespace Ice
@@ -508,7 +535,7 @@ const char* iceSliceChecksums[] =
 {
     "::modes::actions", "aad85012203f91c1b5a8c36c7fb2a0a0",
     "::modes::base", "676f35bf8c64a5cc3cefeb1a26dc1b",
-    "::modes::getAction", "b3bbe05bbba6c2a3c2a43e8d10ccd168",
+    "::modes::getAction", "0e123ae50b428f38319dfad89e38c99",
     "::modes::node", "5d2e656c2465b28c373a8784d6380d",
     "::modes::stu", "b0869e37a996c3c3ac8dbbe7ef87d1c",
     0
@@ -536,6 +563,8 @@ const ::std::string iceC_modes_getAction_getStu_name = "getStu";
 
 const ::std::string iceC_modes_getAction_getNode_name = "getNode";
 
+const ::std::string iceC_modes_getAction_getChecksums_name = "getChecksums";
+
 }
 
 modes::AMD_actions_compute::~AMD_actions_compute()
@@ -555,10 +584,10 @@ IceAsync::modes::AMD_actions_compute::ice_response(::Ice::Int ret)
     endWriteParams();
     completed();
 }
-::IceProxy::Ice::Object* ::IceProxy::modes::upCast(actions* p) { return p; }
+::IceProxy::Ice::Object* ::IceProxy::modes::upCast(::IceProxy::modes::actions* p) { return p; }
 
 void
-::IceProxy::modes::_readProxy(::Ice::InputStream* istr, ::IceInternal::ProxyHandle< actions>& v)
+::IceProxy::modes::_readProxy(::Ice::InputStream* istr, ::IceInternal::ProxyHandle< ::IceProxy::modes::actions>& v)
 {
     ::Ice::ObjectPrx proxy;
     istr->read(proxy);
@@ -568,7 +597,7 @@ void
     }
     else
     {
-        v = new actions;
+        v = new ::IceProxy::modes::actions;
         v->_copyFrom(proxy);
     }
 }
@@ -738,10 +767,10 @@ IceProxy::modes::actions::ice_staticId()
 {
     return ::modes::actions::ice_staticId();
 }
-::IceProxy::Ice::Object* ::IceProxy::modes::upCast(base* p) { return p; }
+::IceProxy::Ice::Object* ::IceProxy::modes::upCast(::IceProxy::modes::base* p) { return p; }
 
 void
-::IceProxy::modes::_readProxy(::Ice::InputStream* istr, ::IceInternal::ProxyHandle< base>& v)
+::IceProxy::modes::_readProxy(::Ice::InputStream* istr, ::IceInternal::ProxyHandle< ::IceProxy::modes::base>& v)
 {
     ::Ice::ObjectPrx proxy;
     istr->read(proxy);
@@ -751,7 +780,7 @@ void
     }
     else
     {
-        v = new base;
+        v = new ::IceProxy::modes::base;
         v->_copyFrom(proxy);
     }
 }
@@ -767,10 +796,10 @@ IceProxy::modes::base::ice_staticId()
 {
     return ::modes::base::ice_staticId();
 }
-::IceProxy::Ice::Object* ::IceProxy::modes::upCast(stu* p) { return p; }
+::IceProxy::Ice::Object* ::IceProxy::modes::upCast(::IceProxy::modes::stu* p) { return p; }
 
 void
-::IceProxy::modes::_readProxy(::Ice::InputStream* istr, ::IceInternal::ProxyHandle< stu>& v)
+::IceProxy::modes::_readProxy(::Ice::InputStream* istr, ::IceInternal::ProxyHandle< ::IceProxy::modes::stu>& v)
 {
     ::Ice::ObjectPrx proxy;
     istr->read(proxy);
@@ -780,7 +809,7 @@ void
     }
     else
     {
-        v = new stu;
+        v = new ::IceProxy::modes::stu;
         v->_copyFrom(proxy);
     }
 }
@@ -796,10 +825,10 @@ IceProxy::modes::stu::ice_staticId()
 {
     return ::modes::stu::ice_staticId();
 }
-::IceProxy::Ice::Object* ::IceProxy::modes::upCast(getAction* p) { return p; }
+::IceProxy::Ice::Object* ::IceProxy::modes::upCast(::IceProxy::modes::getAction* p) { return p; }
 
 void
-::IceProxy::modes::_readProxy(::Ice::InputStream* istr, ::IceInternal::ProxyHandle< getAction>& v)
+::IceProxy::modes::_readProxy(::Ice::InputStream* istr, ::IceInternal::ProxyHandle< ::IceProxy::modes::getAction>& v)
 {
     ::Ice::ObjectPrx proxy;
     istr->read(proxy);
@@ -809,7 +838,7 @@ void
     }
     else
     {
-        v = new getAction;
+        v = new ::IceProxy::modes::getAction;
         v->_copyFrom(proxy);
     }
 }
@@ -940,6 +969,46 @@ IceProxy::modes::getAction::end_getNode(const ::Ice::AsyncResultPtr& result)
     return ret;
 }
 
+::Ice::AsyncResultPtr
+IceProxy::modes::getAction::_iceI_begin_getChecksums(const ::Ice::Context& context, const ::IceInternal::CallbackBasePtr& del, const ::Ice::LocalObjectPtr& cookie, bool sync)
+{
+    _checkTwowayOnly(iceC_modes_getAction_getChecksums_name, sync);
+    ::IceInternal::OutgoingAsyncPtr result = new ::IceInternal::CallbackOutgoing(this, iceC_modes_getAction_getChecksums_name, del, cookie, sync);
+    try
+    {
+        result->prepare(iceC_modes_getAction_getChecksums_name, ::Ice::Normal, context);
+        result->writeEmptyParams();
+        result->invoke(iceC_modes_getAction_getChecksums_name);
+    }
+    catch(const ::Ice::Exception& ex)
+    {
+        result->abort(ex);
+    }
+    return result;
+}
+
+::Ice::SliceChecksumDict
+IceProxy::modes::getAction::end_getChecksums(const ::Ice::AsyncResultPtr& result)
+{
+    ::Ice::AsyncResult::_check(result, this, iceC_modes_getAction_getChecksums_name);
+    ::Ice::SliceChecksumDict ret;
+    if(!result->_waitForResponse())
+    {
+        try
+        {
+            result->_throwUserException();
+        }
+        catch(const ::Ice::UserException& ex)
+        {
+            throw ::Ice::UnknownUserException(__FILE__, __LINE__, ex.ice_id());
+        }
+    }
+    ::Ice::InputStream* istr = result->_startReadParams();
+    istr->read(ret);
+    result->_endReadParams();
+    return ret;
+}
+
 ::IceProxy::Ice::Object*
 IceProxy::modes::getAction::_newInstance() const
 {
@@ -956,7 +1025,7 @@ modes::actions::~actions()
 {
 }
 
-::Ice::Object* modes::upCast(actions* p) { return p; }
+::Ice::Object* modes::upCast(::modes::actions* p) { return p; }
 
 
 namespace
@@ -1130,7 +1199,7 @@ void
 modes::actions::_iceWriteImpl(::Ice::OutputStream* ostr) const
 {
     ostr->startSlice(ice_staticId(), -1, true);
-    ::Ice::StreamWriter< actions, ::Ice::OutputStream>::write(ostr, *this);
+    Ice::StreamWriter< ::modes::actions, ::Ice::OutputStream>::write(ostr, *this);
     ostr->endSlice();
 }
 
@@ -1138,17 +1207,17 @@ void
 modes::actions::_iceReadImpl(::Ice::InputStream* istr)
 {
     istr->startSlice();
-    ::Ice::StreamReader< actions, ::Ice::InputStream>::read(istr, *this);
+    Ice::StreamReader< ::modes::actions, ::Ice::InputStream>::read(istr, *this);
     istr->endSlice();
 }
 
 void
 modes::_icePatchObjectPtr(actionsPtr& handle, const ::Ice::ObjectPtr& v)
 {
-    handle = actionsPtr::dynamicCast(v);
+    handle = ::modes::actionsPtr::dynamicCast(v);
     if(v && !handle)
     {
-        IceInternal::Ex::throwUOE(actions::ice_staticId(), v);
+        IceInternal::Ex::throwUOE(::modes::actions::ice_staticId(), v);
     }
 }
 
@@ -1156,7 +1225,7 @@ modes::base::~base()
 {
 }
 
-::Ice::Object* modes::upCast(base* p) { return p; }
+::Ice::Object* modes::upCast(::modes::base* p) { return p; }
 
 ::Ice::ObjectPtr
 modes::base::ice_clone() const
@@ -1208,7 +1277,7 @@ void
 modes::base::_iceWriteImpl(::Ice::OutputStream* ostr) const
 {
     ostr->startSlice(ice_staticId(), -1, true);
-    ::Ice::StreamWriter< base, ::Ice::OutputStream>::write(ostr, *this);
+    Ice::StreamWriter< ::modes::base, ::Ice::OutputStream>::write(ostr, *this);
     ostr->endSlice();
 }
 
@@ -1216,7 +1285,7 @@ void
 modes::base::_iceReadImpl(::Ice::InputStream* istr)
 {
     istr->startSlice();
-    ::Ice::StreamReader< base, ::Ice::InputStream>::read(istr, *this);
+    Ice::StreamReader< ::modes::base, ::Ice::InputStream>::read(istr, *this);
     istr->endSlice();
 }
 
@@ -1234,10 +1303,10 @@ modes::base::ice_factory()
 void
 modes::_icePatchObjectPtr(basePtr& handle, const ::Ice::ObjectPtr& v)
 {
-    handle = basePtr::dynamicCast(v);
+    handle = ::modes::basePtr::dynamicCast(v);
     if(v && !handle)
     {
-        IceInternal::Ex::throwUOE(base::ice_staticId(), v);
+        IceInternal::Ex::throwUOE(::modes::base::ice_staticId(), v);
     }
 }
 
@@ -1245,7 +1314,7 @@ modes::stu::~stu()
 {
 }
 
-::Ice::Object* modes::upCast(stu* p) { return p; }
+::Ice::Object* modes::upCast(::modes::stu* p) { return p; }
 
 ::Ice::ObjectPtr
 modes::stu::ice_clone() const
@@ -1298,18 +1367,18 @@ void
 modes::stu::_iceWriteImpl(::Ice::OutputStream* ostr) const
 {
     ostr->startSlice(ice_staticId(), -1, false);
-    ::Ice::StreamWriter< stu, ::Ice::OutputStream>::write(ostr, *this);
+    Ice::StreamWriter< ::modes::stu, ::Ice::OutputStream>::write(ostr, *this);
     ostr->endSlice();
-    base::_iceWriteImpl(ostr);
+    ::modes::base::_iceWriteImpl(ostr);
 }
 
 void
 modes::stu::_iceReadImpl(::Ice::InputStream* istr)
 {
     istr->startSlice();
-    ::Ice::StreamReader< stu, ::Ice::InputStream>::read(istr, *this);
+    Ice::StreamReader< ::modes::stu, ::Ice::InputStream>::read(istr, *this);
     istr->endSlice();
-    base::_iceReadImpl(istr);
+    ::modes::base::_iceReadImpl(istr);
 }
 
 namespace
@@ -1326,10 +1395,10 @@ modes::stu::ice_factory()
 void
 modes::_icePatchObjectPtr(stuPtr& handle, const ::Ice::ObjectPtr& v)
 {
-    handle = stuPtr::dynamicCast(v);
+    handle = ::modes::stuPtr::dynamicCast(v);
     if(v && !handle)
     {
-        IceInternal::Ex::throwUOE(stu::ice_staticId(), v);
+        IceInternal::Ex::throwUOE(::modes::stu::ice_staticId(), v);
     }
 }
 
@@ -1337,7 +1406,7 @@ modes::getAction::~getAction()
 {
 }
 
-::Ice::Object* modes::upCast(getAction* p) { return p; }
+::Ice::Object* modes::upCast(::modes::getAction* p) { return p; }
 
 
 namespace
@@ -1384,7 +1453,7 @@ modes::getAction::_iceD_getactions(::IceInternal::Incoming& inS, const ::Ice::Cu
 {
     _iceCheckMode(::Ice::Normal, current.mode);
     inS.readEmptyParams();
-    actionsPrx ret = this->getactions(current);
+    ::modes::actionsPrx ret = this->getactions(current);
     ::Ice::OutputStream* ostr = inS.startWriteParams();
     ostr->write(ret);
     inS.endWriteParams();
@@ -1396,11 +1465,11 @@ modes::getAction::_iceD_getStu(::IceInternal::Incoming& inS, const ::Ice::Curren
 {
     _iceCheckMode(::Ice::Normal, current.mode);
     ::Ice::InputStream* istr = inS.startReadParams();
-    stuPtr iceP_s;
+    ::modes::stuPtr iceP_s;
     istr->read(iceP_s);
     istr->readPendingValues();
     inS.endReadParams();
-    stuPtr ret = this->getStu(iceP_s, current);
+    ::modes::stuPtr ret = this->getStu(iceP_s, current);
     ::Ice::OutputStream* ostr = inS.startWriteParams();
     ostr->write(ret);
     ostr->writePendingValues();
@@ -1413,10 +1482,22 @@ modes::getAction::_iceD_getNode(::IceInternal::Incoming& inS, const ::Ice::Curre
 {
     _iceCheckMode(::Ice::Normal, current.mode);
     ::Ice::InputStream* istr = inS.startReadParams();
-    node iceP_n;
+    ::modes::node iceP_n;
     istr->read(iceP_n);
     inS.endReadParams();
-    node ret = this->getNode(iceP_n, current);
+    ::modes::node ret = this->getNode(iceP_n, current);
+    ::Ice::OutputStream* ostr = inS.startWriteParams();
+    ostr->write(ret);
+    inS.endWriteParams();
+    return true;
+}
+
+bool
+modes::getAction::_iceD_getChecksums(::IceInternal::Incoming& inS, const ::Ice::Current& current)
+{
+    _iceCheckMode(::Ice::Normal, current.mode);
+    inS.readEmptyParams();
+    ::Ice::SliceChecksumDict ret = this->getChecksums(current);
     ::Ice::OutputStream* ostr = inS.startWriteParams();
     ostr->write(ret);
     inS.endWriteParams();
@@ -1427,6 +1508,7 @@ namespace
 {
 const ::std::string iceC_modes_getAction_all[] =
 {
+    "getChecksums",
     "getNode",
     "getStu",
     "getactions",
@@ -1441,7 +1523,7 @@ const ::std::string iceC_modes_getAction_all[] =
 bool
 modes::getAction::_iceDispatch(::IceInternal::Incoming& in, const ::Ice::Current& current)
 {
-    ::std::pair<const ::std::string*, const ::std::string*> r = ::std::equal_range(iceC_modes_getAction_all, iceC_modes_getAction_all + 7, current.operation);
+    ::std::pair<const ::std::string*, const ::std::string*> r = ::std::equal_range(iceC_modes_getAction_all, iceC_modes_getAction_all + 8, current.operation);
     if(r.first == r.second)
     {
         throw ::Ice::OperationNotExistException(__FILE__, __LINE__, current.id, current.facet, current.operation);
@@ -1451,29 +1533,33 @@ modes::getAction::_iceDispatch(::IceInternal::Incoming& in, const ::Ice::Current
     {
         case 0:
         {
-            return _iceD_getNode(in, current);
+            return _iceD_getChecksums(in, current);
         }
         case 1:
         {
-            return _iceD_getStu(in, current);
+            return _iceD_getNode(in, current);
         }
         case 2:
         {
-            return _iceD_getactions(in, current);
+            return _iceD_getStu(in, current);
         }
         case 3:
         {
-            return _iceD_ice_id(in, current);
+            return _iceD_getactions(in, current);
         }
         case 4:
         {
-            return _iceD_ice_ids(in, current);
+            return _iceD_ice_id(in, current);
         }
         case 5:
         {
-            return _iceD_ice_isA(in, current);
+            return _iceD_ice_ids(in, current);
         }
         case 6:
+        {
+            return _iceD_ice_isA(in, current);
+        }
+        case 7:
         {
             return _iceD_ice_ping(in, current);
         }
@@ -1489,7 +1575,7 @@ void
 modes::getAction::_iceWriteImpl(::Ice::OutputStream* ostr) const
 {
     ostr->startSlice(ice_staticId(), -1, true);
-    ::Ice::StreamWriter< getAction, ::Ice::OutputStream>::write(ostr, *this);
+    Ice::StreamWriter< ::modes::getAction, ::Ice::OutputStream>::write(ostr, *this);
     ostr->endSlice();
 }
 
@@ -1497,17 +1583,17 @@ void
 modes::getAction::_iceReadImpl(::Ice::InputStream* istr)
 {
     istr->startSlice();
-    ::Ice::StreamReader< getAction, ::Ice::InputStream>::read(istr, *this);
+    Ice::StreamReader< ::modes::getAction, ::Ice::InputStream>::read(istr, *this);
     istr->endSlice();
 }
 
 void
 modes::_icePatchObjectPtr(getActionPtr& handle, const ::Ice::ObjectPtr& v)
 {
-    handle = getActionPtr::dynamicCast(v);
+    handle = ::modes::getActionPtr::dynamicCast(v);
     if(v && !handle)
     {
-        IceInternal::Ex::throwUOE(getAction::ice_staticId(), v);
+        IceInternal::Ex::throwUOE(::modes::getAction::ice_staticId(), v);
     }
 }
 
@@ -1522,7 +1608,7 @@ const char* iceSliceChecksums[] =
 {
     "::modes::actions", "aad85012203f91c1b5a8c36c7fb2a0a0",
     "::modes::base", "676f35bf8c64a5cc3cefeb1a26dc1b",
-    "::modes::getAction", "b3bbe05bbba6c2a3c2a43e8d10ccd168",
+    "::modes::getAction", "0e123ae50b428f38319dfad89e38c99",
     "::modes::node", "5d2e656c2465b28c373a8784d6380d",
     "::modes::stu", "b0869e37a996c3c3ac8dbbe7ef87d1c",
     0

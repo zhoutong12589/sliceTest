@@ -157,7 +157,8 @@
     {
         "getactions": [, , , , ["modes.actionsPrx"], , , , , ],
         "getStu": [, , , , ["modes.stu", true], [["modes.stu", true]], , , true, true],
-        "getNode": [, , , , [modes.node], [[modes.node]], , , , ]
+        "getNode": [, , , , [modes.node], [[modes.node]], , , , ],
+        "getChecksums": [, , , , ["Ice.SliceChecksumDictHelper"], , , , , ]
     });
     exports.modes = modes;
 }

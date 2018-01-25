@@ -1,5 +1,4 @@
-#include <Ice/SliceChecksums.h>
-
+#include <Ice/SliceChecksumDict.ice>
 
 module modes
 {
@@ -54,7 +53,7 @@ module modes
         node getNode(node n);
         
         //返回服务端的checksums
-        SliceChecksumDict getChecksums();
+        Ice::SliceChecksumDict getChecksums();
     }
     
     

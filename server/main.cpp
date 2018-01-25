@@ -73,7 +73,12 @@ class getActionI : public getAction
         cout<<"getactions 2"<<endl;
         return Printer;
     }
-    
+    virtual ::Ice::SliceChecksumDict getChecksums(const ::Ice::Current& = ::Ice::emptyCurrent)
+    {
+        Ice::SliceChecksumDict localChecksums = Ice::sliceChecksums();
+        
+        return localChecksums;
+    }
 };
 
 
